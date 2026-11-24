@@ -34,6 +34,11 @@ struct date
 	{
 		os << toString();
 	}
+
+	year_month_day getYMD()
+	{
+		return year_month_day{ _year, _month, _day };
+	}
 };
 
 class File
@@ -91,6 +96,8 @@ public:
 	}
 };
 
+void sort(vector<File>& Files);
+
 int main()
 {
 	ifstream in("in.txt");
@@ -104,10 +111,13 @@ int main()
 			break;
 		try {
 			Files.push_back(text);
-			cout << Files[i].getDataAboutFile() << endl;
 		}
 		catch (string s) {};
 	}
+	
+	sort(Files);
+	for(int i = 0;i < Files.size();i++)
+		cout << Files[i].getDataAboutFile() << endl;
 }
 
 string extractData(const string& data,const string& regEx)
@@ -117,4 +127,25 @@ string extractData(const string& data,const string& regEx)
 	smatch match;
 	regex_search(data, match, name);
 	return match.str();
+}
+
+void sort(vector<File>& Files)
+{
+	bool f = true;
+	int l = 0, r = Files.size();
+	while (f)
+	{
+		f = false;
+		l = 0;
+		while (l < r-1)
+		{
+			if (Files[l].getFileDate().getYMD() < Files[l + 1].getFileDate().getYMD())
+			{
+				f = true;
+				swap(Files[l], Files[l + 1]);
+			}
+			l++;
+		}
+		r--;
+	}
 }
