@@ -34,6 +34,7 @@ struct date
 	{
 		os << toString();
 	}
+
 };
 
 class File
@@ -91,11 +92,13 @@ public:
 	}
 };
 
+vector<File> Filter(vector<File> vec);
+
 int main()
 {
 	ifstream in("in.txt");
 	string text;
-	vector<File> Files;
+	vector<File> Files, FilesFilter;
 
 	for (int i = 0; !in.eof(); i++)
 	{
@@ -110,11 +113,21 @@ int main()
 	}
 }
 
-string extractData(const string& data,const string& regEx)
+string extractData(const string& data, const string& regEx)
 {
 	regex name(regEx);
 
 	smatch match;
 	regex_search(data, match, name);
 	return match.str();
+}
+
+vector<File> Filter(vector<File> vec) {
+	vector<File> vec1;
+	for (auto e : vec) {
+		if (e.getFileDate().toString() > "2025") {
+			vec1.push_back(e);
+		}
+	}
+	return vec1;
 }
